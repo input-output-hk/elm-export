@@ -1,10 +1,9 @@
-{-# LANGUAGE DefaultSignatures #-}
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators     #-}
 
-module Elm.Decoder
+module XPort.Elm.Decoder
   ( toElmDecoderRef
   , toElmDecoderRefWith
   , toElmDecoderSource
@@ -13,9 +12,10 @@ module Elm.Decoder
 
 import           Control.Monad.Reader
 import           Data.Text
-import           Elm.Common
-import           Elm.Type
 import           Formatting
+import           XPort.Common         (Options, cr, defaultOptions,
+                                       fieldLabelModifier)
+import           XPort.Elm.Type
 
 class HasDecoder a where
   render :: a -> Reader Options Text

@@ -6,7 +6,7 @@
 {-# LANGUAGE TypeOperators        #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
-module Elm.Type where
+module XPort.Elm.Type where
 
 import           Data.Int     (Int16, Int32, Int64, Int8)
 import           Data.Map

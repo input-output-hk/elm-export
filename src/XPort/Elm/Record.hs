@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Elm.Record
+module XPort.Elm.Record
   ( toElmTypeRef
   , toElmTypeRefWith
   , toElmTypeSource
@@ -8,9 +8,9 @@ module Elm.Record
 
 import           Control.Monad.Reader
 import           Data.Text
-import           Elm.Common
-import           Elm.Type
 import           Formatting
+import           XPort.Common
+import           XPort.Elm.Type
 
 class HasType a where
   render :: a -> Reader Options Text

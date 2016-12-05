@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module ExportSpec where
+module Elm.ExportElmSpec where
 
 import           Data.Char
 import           Data.Int
@@ -11,11 +11,15 @@ import           Data.Monoid
 import           Data.Proxy
 import           Data.Text    hiding (unlines)
 import           Data.Time
-import           Elm
 import           GHC.Generics
 import           Test.Hspec   hiding (Spec)
 import           Test.Hspec   as Hspec
 import           Text.Printf
+import           XPort        (ElmType, Options, defaultOptions,
+                               fieldLabelModifier, toElmDecoderRef,
+                               toElmDecoderSourceWith, toElmEncoderRef,
+                               toElmEncoderSourceWith, toElmTypeRef,
+                               toElmTypeSourceWith)
 
 -- Debugging hint:
 -- ghci> import GHC.Generics
@@ -87,7 +91,7 @@ toElmTypeSpec =
                   ,"%s"])
          defaultOptions
          (Proxy :: Proxy Post)
-         "test/PostType.elm"
+         "test/Elm/PostType.elm"
      it "toElmTypeSource Comment" $
        shouldMatchTypeSource
          (unlines ["module CommentType exposing (..)"
@@ -99,25 +103,25 @@ toElmTypeSpec =
                   ,"%s"])
          defaultOptions
          (Proxy :: Proxy Comment)
-         "test/CommentType.elm"
+         "test/Elm/CommentType.elm"
      it "toElmTypeSource Position" $
        shouldMatchTypeSource
          (unlines ["module PositionType exposing (..)","","","%s"])
          defaultOptions
          (Proxy :: Proxy Position)
-         "test/PositionType.elm"
+         "test/Elm/PositionType.elm"
      it "toElmTypeSource Timing" $
        shouldMatchTypeSource
          (unlines ["module TimingType exposing (..)","","","%s"])
          defaultOptions
          (Proxy :: Proxy Timing)
-         "test/TimingType.elm"
+         "test/Elm/TimingType.elm"
      it "toElmTypeSource Useless" $
        shouldMatchTypeSource
          (unlines ["module UselessType exposing (..)","","","%s"])
          defaultOptions
          (Proxy :: Proxy Useless)
-         "test/UselessType.elm"
+         "test/Elm/UselessType.elm"
      it "toElmTypeSource FavoritePlaces" $
        shouldMatchTypeSource
          (unlines ["module FavoritePlacesType exposing (..)"
@@ -128,7 +132,7 @@ toElmTypeSpec =
                   ,"%s"])
          defaultOptions
          (Proxy :: Proxy FavoritePlaces)
-         "test/FavoritePlacesType.elm"
+         "test/Elm/FavoritePlacesType.elm"
      it "toElmTypeSourceWithOptions Post" $
        shouldMatchTypeSource
          (unlines ["module PostTypeWithOptions exposing (..)"
@@ -139,7 +143,7 @@ toElmTypeSpec =
                   ,"%s"])
          (defaultOptions {fieldLabelModifier = withPrefix "post"})
          (Proxy :: Proxy Post)
-         "test/PostTypeWithOptions.elm"
+         "test/Elm/PostTypeWithOptions.elm"
      it "toElmTypeSourceWithOptions Comment" $
        shouldMatchTypeSource
          (unlines ["module CommentTypeWithOptions exposing (..)"
@@ -151,7 +155,7 @@ toElmTypeSpec =
                   ,"%s"])
          (defaultOptions {fieldLabelModifier = withPrefix "comment"})
          (Proxy :: Proxy Comment)
-         "test/CommentTypeWithOptions.elm"
+         "test/Elm/CommentTypeWithOptions.elm"
      describe "Convert to Elm type references." $
        do it "toElmTypeRef Post" $
             toElmTypeRef (Proxy :: Proxy Post)
@@ -189,7 +193,7 @@ toElmDecoderSpec =
                   ,"%s"])
          defaultOptions
          (Proxy :: Proxy Comment)
-         "test/CommentDecoder.elm"
+         "test/Elm/CommentDecoder.elm"
      it "toElmDecoderSource Post" $
        shouldMatchDecoderSource
          (unlines ["module PostDecoder exposing (..)"
@@ -203,7 +207,7 @@ toElmDecoderSpec =
                   ,"%s"])
          defaultOptions
          (Proxy :: Proxy Post)
-         "test/PostDecoder.elm"
+         "test/Elm/PostDecoder.elm"
      it "toElmDecoderSourceWithOptions Post" $
        shouldMatchDecoderSource
          (unlines ["module PostDecoderWithOptions exposing (..)"
@@ -217,7 +221,7 @@ toElmDecoderSpec =
                   ,"%s"])
          (defaultOptions {fieldLabelModifier = withPrefix "post"})
          (Proxy :: Proxy Post)
-         "test/PostDecoderWithOptions.elm"
+         "test/Elm/PostDecoderWithOptions.elm"
      it "toElmDecoderSourceWithOptions Comment" $
        shouldMatchDecoderSource
          (unlines ["module CommentDecoderWithOptions exposing (..)"
@@ -232,7 +236,7 @@ toElmDecoderSpec =
                   ,"%s"])
          (defaultOptions {fieldLabelModifier = withPrefix "comment"})
          (Proxy :: Proxy Comment)
-         "test/CommentDecoderWithOptions.elm"
+         "test/Elm/CommentDecoderWithOptions.elm"
      describe "Convert to Elm decoder references." $
        do it "toElmDecoderRef Post" $
             toElmDecoderRef (Proxy :: Proxy Post)
@@ -269,7 +273,7 @@ toElmEncoderSpec =
                   ,"%s"])
          defaultOptions
          (Proxy :: Proxy Comment)
-         "test/CommentEncoder.elm"
+         "test/Elm/CommentEncoder.elm"
      it "toElmEncoderSource Post" $
        shouldMatchEncoderSource
          (unlines ["module PostEncoder exposing (..)"
@@ -282,7 +286,7 @@ toElmEncoderSpec =
                   ,"%s"])
          defaultOptions
          (Proxy :: Proxy Post)
-         "test/PostEncoder.elm"
+         "test/Elm/PostEncoder.elm"
      it "toElmEncoderSourceWithOptions Comment" $
        shouldMatchEncoderSource
          (unlines ["module CommentEncoderWithOptions exposing (..)"
@@ -296,7 +300,7 @@ toElmEncoderSpec =
                   ,"%s"])
          (defaultOptions {fieldLabelModifier = withPrefix "comment"})
          (Proxy :: Proxy Comment)
-         "test/CommentEncoderWithOptions.elm"
+         "test/Elm/CommentEncoderWithOptions.elm"
      it "toElmEncoderSourceWithOptions Post" $
        shouldMatchEncoderSource
          (unlines ["module PostEncoderWithOptions exposing (..)"
@@ -309,7 +313,7 @@ toElmEncoderSpec =
                   ,"%s"])
          (defaultOptions {fieldLabelModifier = withPrefix "post"})
          (Proxy :: Proxy Post)
-         "test/PostEncoderWithOptions.elm"
+         "test/Elm/PostEncoderWithOptions.elm"
      describe "Convert to Elm encoder references." $
        do it "toElmEncoderRef Post" $
             toElmEncoderRef (Proxy :: Proxy Post)
@@ -360,4 +364,4 @@ initCap t =
         Just (c, cs) -> cons (Data.Char.toUpper c) cs
 
 withPrefix :: Text -> Text -> Text
-withPrefix prefix s = prefix <> ( initCap  s)
+withPrefix prefix s = prefix <> initCap  s

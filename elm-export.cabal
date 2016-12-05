@@ -16,7 +16,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Elm
+  exposed-modules:     XPort
   build-depends:       base >= 4.7 && < 5
                      , bytestring
                      , containers
@@ -27,18 +27,20 @@ library
                      , time
   default-language:    Haskell2010
   ghc-options:         -Wall
-  other-modules: Elm.Type
-               , Elm.Common
-               , Elm.Decoder
-               , Elm.Encoder
-               , Elm.File
-               , Elm.Record
+  other-modules: XPort.Common
+                , XPort.Encoder
+                , XPort.File
+                , XPort.Elm.Elm
+                , XPort.Elm.Type
+                , XPort.Elm.Decoder
+                , XPort.Elm.Encoder
+                , XPort.Elm.Record
 
 test-suite elm-export-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  other-modules:       ExportSpec
+  other-modules:       Elm.ExportElmSpec
                      , TypesSpec
   build-depends:       QuickCheck
                      , base

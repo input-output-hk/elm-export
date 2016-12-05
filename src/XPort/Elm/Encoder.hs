@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Elm.Encoder
+module XPort.Elm.Encoder
   ( toElmEncoderRef
   , toElmEncoderRefWith
   , toElmEncoderSource
@@ -8,15 +8,12 @@ module Elm.Encoder
 
 import           Control.Monad.Reader
 import           Data.Text
-import           Elm.Common
-import           Elm.Type
 import           Formatting
-
-class HasEncoder a where
-  render :: a -> Reader Options Text
-
-class HasEncoderRef a where
-  renderRef :: a -> Reader Options Text
+import           XPort.Common
+import           XPort.Elm.Type       (ElmConstructor (..), ElmDatatype (..),
+                                       ElmPrimitive (..), ElmType (..),
+                                       ElmValue (..))
+import           XPort.Encoder        (HasEncoder (..), HasEncoderRef (..))
 
 instance HasEncoder ElmDatatype where
     render d@(ElmDatatype name constructor) = do

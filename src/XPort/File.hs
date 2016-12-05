@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Elm.File
+module XPort.File
   ( Spec(..)
   , specsToDir
   ) where
