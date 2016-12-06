@@ -2,7 +2,7 @@
 module XPort.Common  where
 
 import           Data.Text  (Text)
-import           Formatting
+import           Formatting (Format, now)
 
 data Options =
   Options {fieldLabelModifier :: Text -> Text}

@@ -79,9 +79,9 @@ spec =
 toPSTypeSpec :: Hspec.Spec
 toPSTypeSpec =
   describe "Convert to PureScript types." $
-  do it "toPSTypeSource Post" $
-       shouldMatchTypeSource
-         (unlines ["module PostType where"
+  do  it "toPSTypeSource Post" $
+        shouldMatchTypeSource
+          (unlines ["module PostType where"
                   ,""
                   ,"import CommentType (Comment)"
                   ,"import Data.Maybe (Maybe)"
@@ -91,70 +91,78 @@ toPSTypeSpec =
          defaultOptions
          (Proxy :: Proxy Post)
          "test/PureScript/PostType.purs"
-    --  it "toPSTypeSource Comment" $
-    --    shouldMatchTypeSource
-    --      (unlines ["module CommentType where"
-    --               ,""
-    --               ,"import Date exposing (Date)"
-    --               ,"import Dict exposing (Dict)"
-    --               ,""
-    --               ,""
-    --               ,"%s"])
-    --      defaultOptions
-    --      (Proxy :: Proxy Comment)
-    --      "test/PureScript/CommentType.purs"
-    --  it "toPSTypeSource Position" $
-    --    shouldMatchTypeSource
-    --      (unlines ["module PositionType where","","","%s"])
-    --      defaultOptions
-    --      (Proxy :: Proxy Position)
-    --      "test/PureScript/PositionType.purs"
-    --  it "toPSTypeSource Timing" $
-    --    shouldMatchTypeSource
-    --      (unlines ["module TimingType where","","","%s"])
-    --      defaultOptions
-    --      (Proxy :: Proxy Timing)
-    --      "test/PureScript/TimingType.purs"
-    --  it "toPSTypeSource Useless" $
-    --    shouldMatchTypeSource
-    --      (unlines ["module UselessType where","","","%s"])
-    --      defaultOptions
-    --      (Proxy :: Proxy Useless)
-    --      "test/PureScript/UselessType.purs"
-    --  it "toPSTypeSource FavoritePlaces" $
-    --    shouldMatchTypeSource
-    --      (unlines ["module FavoritePlacesType where"
-    --               ,""
-    --               ,"import PositionType where"
-    --               ,""
-    --               ,""
-    --               ,"%s"])
-    --      defaultOptions
-    --      (Proxy :: Proxy FavoritePlaces)
-    --      "test/PureScript/FavoritePlacesType.purs"
-    --  it "toPSTypeSourceWithOptions Post" $
-    --    shouldMatchTypeSource
-    --      (unlines ["module PostTypeWithOptions where"
-    --               ,""
-    --               ,"import CommentType where"
-    --               ,""
-    --               ,""
-    --               ,"%s"])
-    --      (defaultOptions {fieldLabelModifier = withPrefix "post"})
-    --      (Proxy :: Proxy Post)
-    --      "test/PureScript/PostTypeWithOptions.purs"
-    --  it "toPSTypeSourceWithOptions Comment" $
-    --    shouldMatchTypeSource
-    --      (unlines ["module CommentTypeWithOptions where"
-    --               ,""
-    --               ,"import Date exposing (Date)"
-    --               ,"import Dict exposing (Dict)"
-    --               ,""
-    --               ,""
-    --               ,"%s"])
-    --      (defaultOptions {fieldLabelModifier = withPrefix "comment"})
-    --      (Proxy :: Proxy Comment)
-    --      "test/PureScript/CommentTypeWithOptions.purs"
+      it "toPSTypeSource Comment" $
+        shouldMatchTypeSource
+          (unlines ["module CommentType where"
+                  ,""
+                  ,"import Data.Date (Date)"
+                  ,"import Data.Map (Map)"
+                  ,"import Data.Tuple (Tuple)"
+                  ,""
+                  ,"%s"])
+          defaultOptions
+          (Proxy :: Proxy Comment)
+          "test/PureScript/CommentType.purs"
+      it "toPSTypeSource Position" $
+        shouldMatchTypeSource
+          (unlines ["module PositionType where"
+                    ,""
+                    ,"%s"])
+          defaultOptions
+          (Proxy :: Proxy Position)
+          "test/PureScript/PositionType.purs"
+      it "toPSTypeSource Timing" $
+        shouldMatchTypeSource
+          (unlines ["module TimingType where"
+                    ,""
+                    ,"%s"])
+          defaultOptions
+          (Proxy :: Proxy Timing)
+          "test/PureScript/TimingType.purs"
+      it "toPSTypeSource Useless" $
+        shouldMatchTypeSource
+          (unlines ["module UselessType where"
+                    ,""
+                    ,"%s"])
+          defaultOptions
+          (Proxy :: Proxy Useless)
+          "test/PureScript/UselessType.purs"
+      it "toPSTypeSource FavoritePlaces" $
+        shouldMatchTypeSource
+          (unlines ["module FavoritePlacesType where"
+                  , ""
+                  , "import Data.Map (Map)"
+                  , "import Data.List (List)"
+                  , "import PositionType (Position)"
+                  , ""
+                  , "%s"])
+          defaultOptions
+          (Proxy :: Proxy FavoritePlaces)
+          "test/PureScript/FavoritePlacesType.purs"
+      it "toPSTypeSourceWithOptions Post" $
+        shouldMatchTypeSource
+          (unlines ["module PostTypeWithOptions where"
+                  ,""
+                  ,"import CommentType (Comment)"
+                  ,"import Data.Maybe (Maybe)"
+                  ,"import Data.List (List)"
+                  ,""
+                  ,"%s"])
+          (defaultOptions {fieldLabelModifier = withPrefix "post"})
+          (Proxy :: Proxy Post)
+          "test/PureScript/PostTypeWithOptions.purs"
+      it "toPSTypeSourceWithOptions Comment" $
+        shouldMatchTypeSource
+          (unlines ["module CommentTypeWithOptions where"
+                  ,""
+                  ,"import Data.Date (Date)"
+                  ,"import Data.Map (Map)"
+                  ,"import Data.Tuple (Tuple)"
+                  ,""
+                  ,"%s"])
+          (defaultOptions {fieldLabelModifier = withPrefix "comment"})
+          (Proxy :: Proxy Comment)
+          "test/PureScript/CommentTypeWithOptions.purs"
     --  describe "Convert to PureScript type references." $
     --    do it "toPSTypeRef Post" $
     --         toPSTypeRef (Proxy :: Proxy Post)

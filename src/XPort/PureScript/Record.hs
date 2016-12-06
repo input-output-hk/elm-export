@@ -18,17 +18,24 @@ class HasType a where
 class HasTypeRef a where
   renderRef :: a -> Reader Options Text
 
+getTypeKeyword :: Bool -> Text
+getTypeKeyword isNewtype
+  | isNewtype = pack "newtype"
+  | otherwise = pack "data"
+
 instance HasType PSDatatype where
-    render d@(PSDatatype _ constructor@(PSRecordConstructor _ _)) =
-        sformat ("type " % stext % " =" % cr % stext) <$> renderRef d <*> render constructor
-    render d@(PSDatatype _ constructor@(PSMultipleConstructors _)) =
-        sformat ("type " % stext % cr % "  = " % stext) <$> renderRef d <*> render constructor
-    render d@(PSDatatype _ constructor@(PSNamedConstructor _ _)) =
-        sformat ("type " % stext % cr % "  = " % stext) <$> renderRef d <*> render constructor
+    render d@(PSDatatype _ constructor@(PSRecordConstructor constructorName _) isNewtype) =
+        sformat (stext % " " % stext % " = " % stext % cr % stext)
+          <$> pure (getTypeKeyword isNewtype) <*> renderRef d <*> pure constructorName
+          <*> render constructor
+    render d@(PSDatatype _ constructor@(PSMultipleConstructors _) _) =
+        sformat ("data "  % stext % cr % "  = " % stext) <$> renderRef d <*> render constructor
+    render d@(PSDatatype _ constructor@(PSNamedConstructor _ _) _) =
+        sformat ("data " % stext % cr % "  = " % stext) <$> renderRef d <*> render constructor
     render (PSPrimitive primitive) = renderRef primitive
 
 instance HasTypeRef PSDatatype where
-    renderRef (PSDatatype typeName _) =
+    renderRef (PSDatatype typeName _ _) =
         pure typeName
 
     renderRef (PSPrimitive primitive) =
@@ -59,14 +66,14 @@ instance HasTypeRef PSPrimitive where
     renderRef (PSList (PSPrimitive PSChar)) = renderRef PSString
     renderRef (PSList datatype) = sformat ("List " % stext) <$> renderRef datatype
     renderRef (PSTuple2 x y) =
-        sformat ("(" % stext % ", " % stext % ")") <$> renderRef x <*> renderRef y
+        sformat ("Tuple " % stext % " " % stext) <$> renderRef x <*> renderRef y
     renderRef (PSMaybe datatype) =
         sformat ("Maybe " % stext) <$> renderRef datatype
     renderRef (PSDict k v) =
-        sformat ("Dict (" % stext % ") (" % stext % ")") <$> renderRef k <*> renderRef v
+        sformat ("Map (" % stext % ") (" % stext % ")") <$> renderRef k <*> renderRef v
     renderRef PSInt = pure "Int"
     renderRef PSDate = pure "Date"
-    renderRef PSBool = pure "Bool"
+    renderRef PSBool = pure "Boolean"
     renderRef PSChar = pure "Char"
     renderRef PSString = pure "String"
     renderRef PSUnit = pure "()"

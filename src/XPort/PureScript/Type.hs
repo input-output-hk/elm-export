@@ -13,12 +13,14 @@ import           Data.Map
 import           Data.Proxy
 import           Data.Text
 import           Data.Time
-import           GHC.Generics
+import           GHC.Generics ((:*:), (:+:), C1, Constructor, D1, Datatype,
+                               Generic, Rec0, Rep, S1, Selector, U1,
+                               conIsRecord, conName, datatypeName, from,
+                               isNewtype, selName, unM1)
 import           Prelude
 
 data PSDatatype
-    = PSDatatype Text
-                  PSConstructor
+    = PSDatatype Text PSConstructor Bool
     | PSPrimitive PSPrimitive
      deriving (Show, Eq)
 
@@ -32,10 +34,8 @@ data PSPrimitive
     | PSUnit
     | PSList PSDatatype
     | PSMaybe PSDatatype
-    | PSTuple2 PSDatatype
-              PSDatatype
-    | PSDict PSPrimitive
-            PSDatatype
+    | PSTuple2 PSDatatype PSDatatype
+    | PSDict PSPrimitive PSDatatype
      deriving (Show, Eq)
 
 
@@ -55,7 +55,7 @@ data PSValue
 
 ------------------------------------------------------------
 
-class PSType a  where
+class PSType a where
     toPSType :: a -> PSDatatype
     toPSType = genericToPSDatatype . from
     default toPSType :: (Generic a, GenericPSDatatype (Rep a)) => a -> PSDatatype
@@ -71,6 +71,7 @@ instance (Datatype d, GenericPSConstructor f) =>
         PSDatatype
             (pack (datatypeName datatype))
             (genericToPSConstructor (unM1 datatype))
+            (isNewtype datatype)
 
 -- ------------------------------------------------------------
 class GenericPSConstructor f  where
@@ -119,7 +120,7 @@ instance PSType a =>
     genericToPSValue _ =
         case toPSType (undefined :: a) of
             PSPrimitive primitive -> PSPrimitiveRef primitive
-            PSDatatype name _ -> PSRef name
+            PSDatatype name _ _ -> PSRef name
 
 instance PSType a => PSType [a] where
     toPSType _ = PSPrimitive (PSList (toPSType (undefined :: a)))
