@@ -35,12 +35,19 @@ library
                 , XPort.Elm.Decoder
                 , XPort.Elm.Encoder
                 , XPort.Elm.Record
+                , XPort.Elm.Elm
+                , XPort.PureScript.PureScript
+                , XPort.PureScript.Type
+                -- , XPort.PureScript.Decoder
+                -- , XPort.PureScript.Encoder
+                , XPort.PureScript.Record
 
 test-suite elm-export-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
   other-modules:       Elm.ExportElmSpec
+                     , PureScript.ExportSpec
                      , TypesSpec
   build-depends:       QuickCheck
                      , base
