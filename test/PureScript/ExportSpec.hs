@@ -83,12 +83,9 @@ toPSTypeSpec =
        shouldMatchTypeSource
          (unlines ["module PostType where"
                   ,""
-                  ,"import CommentType"
-                  ,""
-                  ,"import Data.Maybe"
-                  ,""
-                  ,"import Data.List"
-                  ,""
+                  ,"import CommentType (Comment)"
+                  ,"import Data.Maybe (Maybe)"
+                  ,"import Data.List (List)"
                   ,""
                   ,"%s"])
          defaultOptions

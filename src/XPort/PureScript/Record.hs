@@ -70,7 +70,7 @@ instance HasTypeRef PSPrimitive where
     renderRef PSChar = pure "Char"
     renderRef PSString = pure "String"
     renderRef PSUnit = pure "()"
-    renderRef PSFloat = pure "Float"
+    renderRef PSFloat = pure "Number"
 
 toPSTypeRefWith :: PSType a => Options -> a -> Text
 toPSTypeRefWith options x = runReader (renderRef (toPSType x)) options
