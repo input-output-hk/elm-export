@@ -5,5 +5,5 @@ import Data.List (List)
 import PositionType (Position)
 
 newtype FavoritePlaces = FavoritePlaces
-  { positionsByUser :: Map (String) (List Position)
+  { positionsByUser :: Map (String) (List (Position))
   }

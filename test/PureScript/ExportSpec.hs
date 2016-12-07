@@ -163,25 +163,25 @@ toPSTypeSpec =
           (defaultOptions {fieldLabelModifier = withPrefix "comment"})
           (Proxy :: Proxy Comment)
           "test/PureScript/CommentTypeWithOptions.purs"
-    --  describe "Convert to PureScript type references." $
-    --    do it "toPSTypeRef Post" $
-    --         toPSTypeRef (Proxy :: Proxy Post)
-    --         `shouldBe` "Post"
-    --       it "toPSTypeRef [Comment]" $
-    --         toPSTypeRef (Proxy :: Proxy [Comment])
-    --         `shouldBe` "List (Comment)"
-    --       it "toPSTypeRef String" $
-    --         toPSTypeRef (Proxy :: Proxy String)
-    --         `shouldBe` "String"
-    --       it "toPSTypeRef (Maybe String)" $
-    --         toPSTypeRef (Proxy :: Proxy (Maybe String))
-    --         `shouldBe` "Maybe (String)"
-    --       it "toPSTypeRef [Maybe String]" $
-    --         toPSTypeRef (Proxy :: Proxy [Maybe String])
-    --         `shouldBe` "List (Maybe (String))"
-    --       it "toPSTypeRef (Map String (Maybe String))" $
-    --         toPSTypeRef (Proxy :: Proxy (Map String (Maybe String)))
-    --         `shouldBe` "Dict (String) (Maybe (String))"
+      describe "Convert to PureScript type references." $
+        do  it "toPSTypeRef Post" $
+              toPSTypeRef (Proxy :: Proxy Post)
+              `shouldBe` "Post"
+            it "toPSTypeRef [Comment]" $
+              toPSTypeRef (Proxy :: Proxy [Comment])
+              `shouldBe` "List (Comment)"
+            it "toPSTypeRef String" $
+              toPSTypeRef (Proxy :: Proxy String)
+              `shouldBe` "String"
+            it "toPSTypeRef (Maybe String)" $
+              toPSTypeRef (Proxy :: Proxy (Maybe String))
+              `shouldBe` "Maybe String"
+            it "toPSTypeRef [Maybe String]" $
+              toPSTypeRef (Proxy :: Proxy [Maybe String])
+              `shouldBe` "List (Maybe String)"
+            it "toPSTypeRef (Map String (Maybe String))" $
+              toPSTypeRef (Proxy :: Proxy (Map String (Maybe String)))
+              `shouldBe` "Map (String) (Maybe String)"
 
 shouldMatchTypeSource
   :: PSType a

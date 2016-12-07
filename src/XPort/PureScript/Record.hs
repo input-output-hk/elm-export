@@ -64,7 +64,7 @@ instance HasType PSValue where
 
 instance HasTypeRef PSPrimitive where
     renderRef (PSList (PSPrimitive PSChar)) = renderRef PSString
-    renderRef (PSList datatype) = sformat ("List " % stext) <$> renderRef datatype
+    renderRef (PSList datatype) = sformat ("List (" % stext % ")") <$> renderRef datatype
     renderRef (PSTuple2 x y) =
         sformat ("Tuple " % stext % " " % stext) <$> renderRef x <*> renderRef y
     renderRef (PSMaybe datatype) =

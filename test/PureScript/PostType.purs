@@ -8,7 +8,7 @@ data Post = Post
   { id :: Int
   , name :: String
   , age :: Maybe Number
-  , comments :: List Comment
+  , comments :: List (Comment)
   , promoted :: Maybe Comment
   , author :: Maybe String
   }
