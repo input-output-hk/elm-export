@@ -38,7 +38,7 @@ library
                 , XPort.Elm.Elm
                 , XPort.PureScript.PureScript
                 , XPort.PureScript.Type
-                -- , XPort.PureScript.Decoder
+                , XPort.PureScript.Decoder
                 -- , XPort.PureScript.Encoder
                 , XPort.PureScript.Record
 

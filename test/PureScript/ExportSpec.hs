@@ -16,8 +16,8 @@ import           Test.Hspec   hiding (Spec)
 import           Test.Hspec   as Hspec
 import           Text.Printf
 import           XPort        (Options, PSType, defaultOptions,
-                               fieldLabelModifier, toPSTypeRef,
-                               toPSTypeSourceWith)
+                               fieldLabelModifier, toPSDecoderSourceWith,
+                               toPSTypeRef, toPSTypeSourceWith)
 
 -- Debugging hint:
 -- ghci> import GHC.Generics
@@ -40,6 +40,11 @@ data Comment = Comment
     , published      :: Bool
     , created        :: UTCTime
     , tags           :: Map String Int
+    } deriving (Generic, PSType)
+
+data A = A
+    { var1 :: Int
+    , var2 :: String
     } deriving (Generic, PSType)
 
 data Position
@@ -73,7 +78,7 @@ data LotsOfInts = LotsOfInts
 spec :: Hspec.Spec
 spec =
   do toPSTypeSpec
-    --  toPSDecoderSpec
+     toPSDecoderSpec
     --  toPSEncoderSpec
 
 toPSTypeSpec :: Hspec.Spec
@@ -183,11 +188,35 @@ toPSTypeSpec =
               toPSTypeRef (Proxy :: Proxy (Map String (Maybe String)))
               `shouldBe` "Map (String) (Maybe String)"
 
+toPSDecoderSpec :: Hspec.Spec
+toPSDecoderSpec =
+  describe "Convert to PS decoders." $
+    do it "toPSDecoderSource Comment" $
+          shouldMatchDecoderSource
+          (unlines ["module CommentDecoder where"
+            ,""
+            ,"import CommentType (Comment)"
+            ,"import Data.Argonaut.Encode (class EncodeJson, gEncodeJson)"
+            ,"import Data.Argonaut.Decode (class DecodeJson, gDecodeJson)"
+            ,"import Data.Generic (class Generic)"
+            ,""
+            ,"%s"])
+          defaultOptions
+          (Proxy :: Proxy Comment)
+          "test/PureScript/CommentDecoder.purs"
+
 shouldMatchTypeSource
   :: PSType a
   => String -> Options -> a -> FilePath -> IO ()
 shouldMatchTypeSource wrapping options x =
   shouldMatchFile . printf wrapping $ toPSTypeSourceWith options x
+
+shouldMatchDecoderSource
+  :: PSType a
+  => String -> Options -> a -> FilePath -> IO ()
+shouldMatchDecoderSource wrapping options x =
+  shouldMatchFile . printf wrapping $ toPSDecoderSourceWith options x
+
 
 shouldMatchFile :: String -> FilePath -> IO ()
 shouldMatchFile actual fileExpected =
