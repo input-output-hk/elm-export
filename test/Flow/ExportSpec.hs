@@ -5,6 +5,7 @@
 module Flow.ExportSpec where
 
 import           Data.Char
+import           Data.Int
 import           Data.Map
 import           Data.Monoid
 import           Data.Proxy
@@ -50,6 +51,13 @@ data Timing
 newtype FavoritePlaces =
   FavoritePlaces {positionsByUser :: Map String [Position]}
   deriving (Generic, FlowType)
+
+data LotsOfInts = LotsOfInts
+    { intA :: Int8
+    , intB :: Int16
+    , intC :: Int32
+    , intD :: Int64
+    } deriving (Generic, FlowType)
 
 spec :: Hspec.Spec
 spec = toFlowTypeSpec
@@ -101,6 +109,14 @@ toFlowTypeSpec =
           defaultOptions
           (Proxy :: Proxy FavoritePlaces)
           "test/Flow/FavoritePlaces.js"
+      it "toFlowTypeSource LotsOfInts" $
+        shouldMatchTypeSource
+          (unlines [ "/* @flow */"
+                   , ""
+                   , "%s"])
+          defaultOptions
+          (Proxy :: Proxy LotsOfInts)
+          "test/Flow/LotsOfInts.js"
 
 shouldMatchTypeSource :: FlowType a => String -> Options -> a -> FilePath -> IO ()
 shouldMatchTypeSource wrapping options x =
