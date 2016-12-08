@@ -23,7 +23,7 @@ instance HasType FlowDatatype where
         sformat ("export default type "  % stext % " =" % cr % stext) <$> renderRef d
           <*> render constructor
     render d@(FlowDatatype _ constructor@(FlowMultipleConstructors _)) =
-        sformat ("export default type "  % stext % "  = " % stext) <$> renderRef d <*> render constructor
+        sformat ("export default type "  % stext % cr % "  = " % stext) <$> renderRef d <*> render constructor
     render d@(FlowDatatype _ constructor@(FlowNamedConstructor _ _)) =
         sformat ("export default type " % stext % "  = " % stext) <$> renderRef d <*> render constructor
     render (FlowPrimitive primitive) = renderRef primitive
@@ -40,7 +40,7 @@ instance HasType FlowConstructor where
     render (FlowRecordConstructor _ value) =
         sformat ("  { " % stext % cr % "  }") <$> render value
     render (FlowNamedConstructor constructorName value) =
-        sformat (stext % stext) constructorName <$> render value
+        sformat ("\"" % stext % "\"" % stext) constructorName <$> render value
     render (FlowMultipleConstructors constructors) =
         fmap (Data.Text.intercalate "\n  | ") . sequence $ render <$> constructors
 

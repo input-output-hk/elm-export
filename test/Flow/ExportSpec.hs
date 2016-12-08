@@ -37,6 +37,18 @@ data Comment = Comment
     , tags           :: Map String Int
     } deriving (Generic, FlowType)
 
+data Position
+  = Beginning
+  | Middle
+  | End
+  deriving (Generic, FlowType)
+
+data Timing
+  = Start
+  | Continue Double
+  | Stop
+  deriving (Generic, FlowType)
+
 spec :: Hspec.Spec
 spec = toFlowTypeSpec
 
@@ -61,6 +73,22 @@ toFlowTypeSpec =
          defaultOptions
          (Proxy :: Proxy Comment)
          "test/Flow/Comment.js"
+      it "toFlowTypeSource Position" $
+        shouldMatchTypeSource
+          (unlines ["/* @flow */"
+                   ,""
+                   ,"%s"])
+          defaultOptions
+          (Proxy :: Proxy Position)
+          "test/Flow/Position.js"
+      it "toFlowTypeSource Timing" $
+        shouldMatchTypeSource
+          (unlines ["/* @flow */"
+                   ,""
+                   ,"%s"])
+          defaultOptions
+          (Proxy :: Proxy Timing)
+          "test/Flow/Timing.js"
 
 shouldMatchTypeSource :: FlowType a => String -> Options -> a -> FilePath -> IO ()
 shouldMatchTypeSource wrapping options x =
