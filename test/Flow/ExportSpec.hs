@@ -5,7 +5,6 @@
 module Flow.ExportSpec where
 
 import           Data.Char
-import           Data.Int
 import           Data.Map
 import           Data.Monoid
 import           Data.Proxy
@@ -16,7 +15,6 @@ import           Test.Hspec   hiding (Spec)
 import           Test.Hspec   as Hspec
 import           Text.Printf
 import           XPort        (FlowType, Options, defaultOptions,
-                               fieldLabelModifier, toFlowTypeRef,
                                toFlowTypeSourceWith)
 
 data Post = Post
@@ -47,6 +45,10 @@ data Timing
   = Start
   | Continue Double
   | Stop
+  deriving (Generic, FlowType)
+
+newtype FavoritePlaces =
+  FavoritePlaces {positionsByUser :: Map String [Position]}
   deriving (Generic, FlowType)
 
 spec :: Hspec.Spec
@@ -89,6 +91,16 @@ toFlowTypeSpec =
           defaultOptions
           (Proxy :: Proxy Timing)
           "test/Flow/Timing.js"
+      it "toFlowTypeSource FavoritePlaces" $
+        shouldMatchTypeSource
+          (unlines [ "/* @flow */"
+                   , ""
+                   , "import Position from 'Position';"
+                   , ""
+                   , "%s"])
+          defaultOptions
+          (Proxy :: Proxy FavoritePlaces)
+          "test/Flow/FavoritePlaces.js"
 
 shouldMatchTypeSource :: FlowType a => String -> Options -> a -> FilePath -> IO ()
 shouldMatchTypeSource wrapping options x =

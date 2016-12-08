@@ -16,7 +16,7 @@ import           Data.Time
 import           GHC.Generics ((:*:), (:+:), C1, Constructor, D1, Datatype,
                                Generic, Rec0, Rep, S1, Selector, U1,
                                conIsRecord, conName, datatypeName, from,
-                               isNewtype, selName, unM1)
+                               selName, unM1)
 import           Prelude
 
 data FlowDatatype
