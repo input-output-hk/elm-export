@@ -41,6 +41,9 @@ library
                 , XPort.PureScript.Decoder
                 -- , XPort.PureScript.Encoder
                 , XPort.PureScript.Record
+                , XPort.Flow.Flow
+                , XPort.Flow.Type
+                , XPort.Flow.Record
 
 test-suite elm-export-test
   type:                exitcode-stdio-1.0
@@ -48,7 +51,7 @@ test-suite elm-export-test
   main-is:             Spec.hs
   other-modules:       Elm.ExportElmSpec
                      , PureScript.ExportSpec
-                     , TypesSpec
+                     , Flow.ExportSpec
   build-depends:       QuickCheck
                      , base
                      , bytestring
